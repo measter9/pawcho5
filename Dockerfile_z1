@@ -1,0 +1,17 @@
+FROM scratch
+ARG VERSION
+ENV APP_VERSION=test.${VERSION:-v0}
+ADD alpine-minirootfs-3.19.1-aarch64.tar /
+RUN apk up-date & apk upgrade
+RUN apk add --update npm
+WORKDIR /usr/app
+COPY ./package.json ./
+RUN npm install
+COPY ./index.js ./
+EXPOSE 3000
+CMD [ "npm", "start" ]
+
+
+#docker build --build-arg VERSION=v123 -f Dockerfile_z1 -t lab5:v0 .
+
+#docker run -h=myhostanme -d --name lab5z1 -p 3000:3000 lab5:v0
